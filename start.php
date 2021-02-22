@@ -2,7 +2,9 @@
 
 REQUIRE "TopPHP.php";
 
-$api = new TopPHP("aa");
-$api->CALL("GET", "bots", []);
+$ID = 1234567890; # Bot User ID
+
+$api = new TopGG("aa");
+$api->GET->stats($ID);
 
 ?>

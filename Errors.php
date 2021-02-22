@@ -24,6 +24,11 @@
   SOFTWARE.
 */
 
+// We want to disable PHP internal warnings for the time being.
+error_reporting("E_NONE");
+ini_set("display_errors", 0);
+ini_set("display_startup_errors", 0);
+
 interface Exceptions {
   public function __construct(string $name, bool $state);
   public function resp(string $name);
