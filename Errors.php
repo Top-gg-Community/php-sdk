@@ -25,15 +25,16 @@
 */
 
 interface Exceptions {
-  public function __construct(string $name);
+  public function __construct(string $name, bool $state);
   public function resp(string $name);
 }
 
 final class TopError implements Exceptions {
   private $error_types;
+  private $write_perms;
   public $error; # anyone can have it.
 
-  public function __construct(string $name) {
+  public function __construct(string $name, bool $state = true) {
     /*
       Declare variables through our class construction.
     */
@@ -43,6 +44,7 @@ final class TopError implements Exceptions {
       "HTTP_RATE_LIMIT",
       "HTTP_UNAUTH"
     ];
+    $this->write_perms = $state;
     $this->error = [
       "type" => "N/A",
       "desc" => "N/A"
@@ -74,18 +76,18 @@ final class TopError implements Exceptions {
 
       case "HTTP_UNAUTH":
         $err = "The HTTP request failed due to unauthorized access.";
-        $err = $err . "\n- Your authorization key may be incorrect.";
-        $err = $err . "\n- You may have sent incorrect parameters.";
+        $err .= "\n- Your authorization key may be incorrect.";
+        $err .= "\n- You may have sent incorrect parameters.";
 
         break;
 
       default:
-        die("There isn't an error here.");
+        $err = "There isn't an error here.";
     }
 
     $this->error["desc"] = $err; # lazy add for code shortening.
 
-    die("[ERROR] {$name}: {$err}");
+    if($this->write_perms) die("[ERROR] {$name}: {$err}");
   }
 }
 
