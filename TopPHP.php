@@ -18,7 +18,7 @@ interface BaseStruct {
 
 class TopGG implements BaseStruct {
   // Let these represent our wrapper structure.
-  private $RESP;
+  public $RESP;
   private $HTTP;
   private $headers;
   private $token;
