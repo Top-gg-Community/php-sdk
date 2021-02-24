@@ -109,14 +109,10 @@ class TopGG implements BaseStruct {
       if($request === false) {
         $this->RESP = 401;
         throw new TopError("HTTP_UNAUTH");
-      } else {
-        $this->RESP = 200;
-        $request = var_dump($request);
-      }
+      } else $this->RESP = 200;
 
       return $request;
-    }
-    else throw new TopError("HTTP_RATE_LIMIT");
+    } else throw new TopError("HTTP_RATE_LIMIT");
   }
 
   public function GET() {
