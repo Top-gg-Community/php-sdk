@@ -1,0 +1,7 @@
+{
+  "name": "top-gg/php-sdk",
+  "description": "The official Top.GG PHP API wrapper.",
+  "require": {
+    "php": ">=7.4"
+  }
+}
