@@ -177,7 +177,7 @@ class GET extends TopGG {
     */
 
     $this->result = $this->CALL(
-      "GET", "bot/{$id}"
+      "GET", "bots/{$id}"
     );
 
     if($this->RESP == 200) return $this->result;
