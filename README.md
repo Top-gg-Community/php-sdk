@@ -5,7 +5,7 @@ A top.gg API wrapper written in PHP 8.
 **NOTE:** At this time, the documentation of this module is currently deprecated.
 See [here](https://docs.top.gg/libraries/php/) for the official information.
 
-Please refer to the [official docs](https://vapour-labs.gitbook.io/topphp/) for more information.
+**DEPRECATED**: See [official docs](https://vapour-labs.gitbook.io/topphp/) for more information.
 
 ## Installation
 TopPHP uses a simplified installation method of .zip unextraction.
