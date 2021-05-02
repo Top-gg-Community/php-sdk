@@ -12,18 +12,13 @@ TopPHP uses a simplified installation method of .zip unextraction.
 
 ## Features
 
-Errors.php:
-* Reliable error logging.
-* Responsive Exception class.
-
-TopPHP.php:
-* Functioning GET methods
-* Functioning POST methods
+* Working GET and POST requests.
+* Enumerable constants for HTTP search lookups.
+* Flexible namespaces and interfaces for easily editing.
+* Up-to-standard package following the latest PSR.
 
 ## Coming Soon
 
-Errors.php:
-* Ratelimit error cache.
-
-TopPHP.php:
-* Implementation of Webhooks.
+* Automatic bot statistics POST requests. (Shards, guilds)
+* Webhooks
+* Forced library global rate-limiting.
