@@ -1,5 +1,5 @@
 # TopPHP
-A top.gg API wrapper written in PHP 8.
+A Top.gg API wrapper written in PHP 8.
 
 ## Documentation
 **NOTE:** At this time, the documentation of this module is currently deprecated.
