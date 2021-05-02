@@ -1,7 +1,17 @@
 {
   "name": "top-gg/php-sdk",
-  "description": "The official Top.GG PHP API wrapper.",
+  "description": "The official Top.gg PHP API wrapper.",
+  "license": "MIT",
   "require": {
-    "php": ">=7.4"
+    "php": "^7.4|^8.0"
+  },
+  "authors": [
+    {
+      "name": "James Walston",
+      "email": "james@digicale.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {"DBL\\": "src/TopPHP/"}
   }
 }
