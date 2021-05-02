@@ -20,7 +20,7 @@
 include_once __DIR__ . "/vendor/autoload.php";
 use DBL\DBL;
 
-$token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc5OTY5NzY1NDI3OTMwNzMxNCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjE5MzExNjcwfQ.ap0eil9X4M5GzmkyXXIke9rKv7QshFSE_vou0ROP5mM";
+$token = "YOUR TOP.GG API TOKEN HERE.";
 $api = new DBL([
   "token" => $token
 ]);
