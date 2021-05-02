@@ -8,7 +8,9 @@ See [here](https://docs.top.gg/libraries/php/) for the official information.
 **DEPRECATED**: See [official docs](https://vapour-labs.gitbook.io/topphp/) for more information.
 
 ## Installation
-TopPHP uses a simplified installation method of .zip unextraction.
+TopPHP uses composer to download. In order to install the library, use the following line:
+
+`composer require top-gg/php-sdk`
 
 ## Features
 
