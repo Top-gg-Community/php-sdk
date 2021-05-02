@@ -19,16 +19,15 @@
 
 include_once __DIR__ . "/vendor/autoload.php";
 use DBL\DBL;
-use DBL\API\SearchType;
 
-$token = "YOUR TOKEN HERE.";
+$token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc5OTY5NzY1NDI3OTMwNzMxNCIsImJvdCI6dHJ1ZSwiaWF0IjoxNjE5MzExNjcwfQ.ap0eil9X4M5GzmkyXXIke9rKv7QshFSE_vou0ROP5mM";
 $api = new DBL([
   "token" => $token
 ]);
 
 if($api->connected)
 {
-  $call = $api->find_info(SearchType::USER, 242351388137488384);
+  $call = $api->get_votes(815774550507126824);
 
   print_r($call);
 }

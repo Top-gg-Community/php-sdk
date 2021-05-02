@@ -138,7 +138,7 @@ final class DBL implements BaseStruct
     return $this->api->req("GET", "/{$type}/{$id}")["json"];
   }
 
-  public function get_votes(int $id): array
+  public function get_votes(int $id)
   {
     return $this->api->req("GET", "/bots/{$id}/votes")["json"];
   }
