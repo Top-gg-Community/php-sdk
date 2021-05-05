@@ -98,6 +98,13 @@ final class DBL implements BaseStruct
     if($response === "200") $this->connected = true;
   }
 
+  /**
+   * Shows the information from the specified type through a query search.
+   *
+   * @param string $type The search type.
+   * @param array $json The JSON query fields, with key:val as assoc.
+   * @return array
+   */
   public function show_info(string $type, array $json = []): array
   {
     switch($type)
@@ -118,6 +125,14 @@ final class DBL implements BaseStruct
     return $this->api->req("GET", "/{$type}", $json)["json"];
   }
 
+  /**
+   * Displays the general information about something
+   * given through the search type.
+   *
+   * @param string $type The search type.
+   * @param int $id The bot/user ID.
+   * @return array
+   */
   public function find_info(string $type, int $id): array
   {
     switch($type)
@@ -138,21 +153,46 @@ final class DBL implements BaseStruct
     return $this->api->req("GET", "/{$type}/{$id}")["json"];
   }
 
+  /**
+   * Returns the total votes of the bot.
+   *
+   * @param int $id The bot ID.
+   * @return array
+   */
   public function get_votes(int $id)
   {
     return $this->api->req("GET", "/bots/{$id}/votes")["json"];
   }
 
+  /**
+   * Returns a boolean check for if a user voted for your bot.
+   *
+   * @param int $id The user Snowflake ID.
+   * @return array
+   */
   public function get_user_vote(int $id): array
   {
     return $this->api->req("GET", "/bots/{$id}/check")["json"];
   }
 
+  /**
+   * Returns the statistics of the bot.
+   *
+   * @param int $id The bot ID.
+   * @return array
+   */
   public function get_stats(int $id): array
   {
     return $this->api->req("GET", "/bots/{$id}/stats")["json"];
   }
 
+  /**
+   * Posts statistics to the bot's Top.gg page.
+   *
+   * @param int $id The bot ID.
+   * @param array $json The JSON query fields.
+   * @return array
+   */
   public function post_stats(int $id, array $json): array
   {
     $_request = new Request($this->token);
@@ -160,26 +200,52 @@ final class DBL implements BaseStruct
     return $_request->req("POST", "/bots/{$id}/stats", $json)["json"];
   }
 
+  /**
+   * Returns the current HTTP address.
+   *
+   * @return string
+   */
   public function getHttp(): string
   {
     return $this->http;
   }
 
+  /**
+   * Returns the current HTTP port serial identification.
+   *
+   * @return int
+   */
   public function getPort(): int
   {
     return $this->port;
   }
 
+  /**
+   * Returns the current HTTP request.
+   *
+   * @return array
+   */
   public function getContents(): array
   {
     return $this->api->getContents();
   }
 
+  /**
+   * Returns the last parsed HTTP request.
+   *
+   * @return array
+   */
   public function getCache(): array
   {
     return $this->api->getCache();
   }
 
+  /**
+   * Returns the current HTTP response code.
+   * (Not to be confused with the cached version in getCache())
+   *
+   * @return string
+   */
   public function getResponse(): string
   {
     return $this->api->getResponse();
