@@ -73,6 +73,25 @@ class Request implements RequestStruct
     $_error = false;
     $_request = null;
     $_response = null;
+    $_json = null;
+
+    /** Set up the query string if JSON detected. */
+    if($json)
+    {
+      $_json = [];
+      $i = 0;
+
+      foreach($json as $key => $val)
+      {
+        if(!$i) $_json[$i] = "?{$key}={$val}";
+        else $_json[$i] = "{$key}={$val}";
+
+        $i++;
+      }
+
+      $_json = implode("&", $_json);
+      $_path = $_path . $_json;
+    }
 
     try
     {
@@ -83,16 +102,13 @@ class Request implements RequestStruct
        * Set up the HTTP request structure.
        * Will contextualize and create how we will interact.
        */
-      $_struct = [
+      $_struct = @stream_context_create([
         "http" => [
           "method" => $type,
           "header" => "Content-Type: application/json" . "\r\n" .
                       "Authorization: {$this->token}" . "\r\n"
         ]
-      ];
-
-      if($json != []) $_struct["http"]["data"] = http_build_query($json);
-      $_struct = @stream_context_create($_struct);
+      ]);
 
       /**
        * Here is where the official request is made
@@ -133,10 +149,10 @@ class Request implements RequestStruct
 
         return
         [
-          "type" => $type,
-          "path" => $_path,
-          "status" => $_response,
-          "json" => ["message" => $_error["message"]]
+          "type"    => $type,
+          "path"    => $_path,
+          "status"  => $_response,
+          "json"    => ["message" => $_error["message"]]
         ];
       }
     }

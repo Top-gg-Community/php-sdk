@@ -21,14 +21,14 @@ include_once __DIR__ . "/vendor/autoload.php";
 use DBL\DBL;
 use DBL\API\Http;
 
-$token = "YOUR TOP.GG API TOKEN HERE.";
+$token = "YOUR TOP.GG API TOKEN KEY HERE.";
 $api = new DBL([
   "token" => $token
 ]);
 
 if($api->connected)
 {
-  print_r($api->find_info(Http::USER, 242351388137488384));
+  print_r($api->get_user_vote(799697654279307314, 242351388137488384));
 }
 
 ?>
