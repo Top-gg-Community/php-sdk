@@ -27,7 +27,7 @@ interface BaseStruct
 
   /** Get information on the votes, vote check; and stats. */
   public function get_votes(int $id);
-  public function get_user_vote(int $id);
+  public function get_user_vote(int $id, int $user);
   public function get_stats(int $id);
 
   /**

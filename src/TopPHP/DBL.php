@@ -215,12 +215,13 @@ final class DBL implements BaseStruct
   /**
    * Returns a boolean check for if a user voted for your bot.
    *
-   * @param   int   $id The user Snowflake ID.
+   * @param   int   $id   The bot user ID.
+   * @param   int   $user The user Snowflake ID.
    * @return  array
    */
-  public function get_user_vote(int $id): array
+  public function get_user_vote(int $id, int $user): array
   {
-    return $this->api->req("GET", "/bots/{$id}/check")["json"];
+    return $this->api->req("GET", "/bots/{$id}/check", ["userId" => $user])["json"]["voted"];
   }
 
   /**
