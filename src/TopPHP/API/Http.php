@@ -11,28 +11,7 @@
  */
 
 namespace DBL\API;
-
-abstract class RequestType
-{
-  const POST = "POST";
-  const GET = "GET";
-}
-
-abstract class SearchType
-{
-  const BOT = "bots";
-  const USER = "users";
-}
-
-interface HttpStruct
-{
-  public function __construct(string $http, int $port = 80);
-  public function call(string $type, string $path, array $payload = []);
-
-  /** Accessor methods for getting private instances. */
-  public function getHttp();
-  public function getPort();
-}
+use DBL\Structs\HttpStruct;
 
 /**
  * Represents the HTTP class for Top.gg.
@@ -43,6 +22,11 @@ interface HttpStruct
  */
 class Http implements HttpStruct
 {
+  public const BOT = "bots";
+  public const USER = "users";
+  public const POST = "POST";
+  public const GET = "GET";
+
   /** @var string */
   private $http;
 
@@ -52,9 +36,9 @@ class Http implements HttpStruct
   /**
    * Creates an Http class instance.
    *
-   * @param string $http The HTTP path you're calling.
-   * @param int $port The HTTP port you're inferring.
-   * @return void
+   * @param   string  $http The HTTP path you're calling.
+   * @param   int     $port The HTTP port you're inferring.
+   * @return  void
    */
   public function __construct(string $http, int $port = 80)
   {
@@ -67,10 +51,10 @@ class Http implements HttpStruct
    * Has to meet with the constants of currently
    * accepted HTTP requests compatible with the API.
    *
-   * @param string $type The HTTP request you're using.
-   * @param string $path The HTTP path you're calling.
-   * @param array $payload Additional information you want to pass on as JSON.
-   * @return array
+   * @param   string  $type The HTTP request you're using.
+   * @param   string  $path The HTTP path you're calling.
+   * @param   array   $payload Additional information you want to pass on as JSON.
+   * @return  array
    */
   public function call(string $type, string $path, array $payload = []): array
   {
@@ -81,11 +65,11 @@ class Http implements HttpStruct
      */
     switch($type)
     {
-      case RequestType::POST:
+      case self::POST:
         $_type = "POST";
         break;
 
-      case RequestType::GET:
+      case self::GET:
         $_type = "GET";
         break;
 
@@ -108,6 +92,19 @@ class Http implements HttpStruct
     $_response = substr($_headers[0], 9, 3);
 
     if($_response === "401") $_response = "200"; // This is because the token is not being enforced.
+    if($_response === "429")
+    {
+      /**
+       * We have two specific ratelimit exceptions here.
+       * To determine this, the content has to be read
+       * in order to give the right exception.
+       *
+       * For now we'll give a standard Exception, this
+       * will be updated in the future.
+       */
+
+       throw new Exception("You have encountered a rate limit. Please refer to the JSON contents for the remaining time.");
+    }
 
     /** Now provide the information for the structure. */
     $_path = ($_response === "200") ? $path : null;
@@ -120,10 +117,10 @@ class Http implements HttpStruct
      */
     return
     [
-      "type" => $_type,
-      "path" => $_path,
-      "status" => $_response,
-      "json" => $_payload
+      "type"    => $_type,
+      "path"    => $_path,
+      "status"  => $_response,
+      "json"    => $_payload
     ];
   }
 
