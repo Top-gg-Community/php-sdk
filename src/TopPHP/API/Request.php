@@ -12,17 +12,7 @@
 
 namespace DBL\API;
 use DBL\API\Http;
-
-interface RequestStruct
-{
-  public function __construct(string $token);
-  public function req(string $type, string $path = null, array $json = [], int $port = 80);
-
-  /** Accessor methods for getting private instances. */
-  public function getContents();
-  public function getCache();
-  public function getResponse();
-}
+use DBL\Structs\RequestStruct;
 
 /**
  * Represents the HTTP request class for Top.gg.
@@ -50,9 +40,9 @@ class Request implements RequestStruct
   /**
    * Creates a Request class instance.
    *
-   * @param string $http The HTTP path you're calling.
-   * @param int $port the HTTP port you're inferring.
-   * @return void
+   * @param   string  $http The HTTP path you're calling.
+   * @param   int     $port the HTTP port you're inferring.
+   * @return  void
    */
   public function __construct(string $token)
   {
@@ -70,11 +60,11 @@ class Request implements RequestStruct
    * to be valid, a request will be validated. Otherwise,
    * an exception is thrown.
    *
-   * @param string $type The HTTP request you're using.
-   * @param string $path The HTTP path you're calling.
-   * @param array $json Additional information you want to pass on as JSON.
-   * @param int $port The HTTP port you're inferring.
-   * @return array
+   * @param   string  $type The HTTP request you're using.
+   * @param   string  $path The HTTP path you're calling.
+   * @param   array   $json Additional information you want to pass on as JSON.
+   * @param   int     $port The HTTP port you're inferring.
+   * @return  array
    */
   public function req(string $type, string $path = null, array $json = [], int $port = 80): array
   {
@@ -86,17 +76,23 @@ class Request implements RequestStruct
 
     try
     {
+      /** Ensure headers are restored. */
+      // header_remove("Content-Type");
+
       /**
        * Set up the HTTP request structure.
        * Will contextualize and create how we will interact.
        */
-      $_struct = @stream_context_create([
+      $_struct = [
         "http" => [
           "method" => $type,
           "header" => "Content-Type: application/json" . "\r\n" .
                       "Authorization: {$this->token}" . "\r\n"
         ]
-      ]);
+      ];
+
+      if($json != []) $_struct["http"]["data"] = http_build_query($json);
+      $_struct = @stream_context_create($_struct);
 
       /**
        * Here is where the official request is made
@@ -112,7 +108,7 @@ class Request implements RequestStruct
     {
       if(!$_error)
       {
-        header("Content-Type: application/json");
+        // header("Content-Type: application/json");
 
         $_struct = $_http->call(
           $type,
