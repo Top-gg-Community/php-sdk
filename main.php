@@ -28,7 +28,7 @@ $api = new DBL([
 
 if($api->connected)
 {
-  print_r($api->find_info(SearchType::USER, 242351388137488384));
+  print_r($api->find_info(Http::USER, 242351388137488384));
 }
 
 ?>
