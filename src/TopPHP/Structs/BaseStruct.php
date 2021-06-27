@@ -14,7 +14,7 @@ namespace DBL\Structs;
 
 interface BaseStruct
 {
-  public function __construct(array $parameters, bool $webhook = false);
+  public function __construct(array $parameters);
 
   /**
    * GET requests are shown respectively here.

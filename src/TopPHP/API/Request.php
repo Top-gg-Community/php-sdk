@@ -37,18 +37,21 @@ class Request implements RequestStruct
   /** @var string */
   private $response;
 
+  public const SERVER_ADDR = "https://top.gg/api";
+  public const SERVER_PORT = 80;
+
   /**
    * Creates a Request class instance.
    *
-   * @param   string  $http The HTTP path you're calling.
-   * @param   int     $port the HTTP port you're inferring.
+   * @param   string  $token  The API token key.
+   * @param   string  $http   The HTTP path you're calling.
    * @return  void
    */
-  public function __construct(string $token)
+  public function __construct(string $token, string $http = self::SERVER_ADDR)
   {
-    $this->http = "https://top.gg/api";
+    $this->http = $http;
     $this->token = $token;
-    $this->content = ["raw" => null, "split" => []];
+    $this->content = [];
     $this->cache = null;
     $this->response = null;
   }
@@ -62,36 +65,19 @@ class Request implements RequestStruct
    *
    * @param   string  $type The HTTP request you're using.
    * @param   string  $path The HTTP path you're calling.
-   * @param   array   $json Additional information you want to pass on as JSON.
+   * @param   string  $resp An HTTP response to be given when handshake is successful.
    * @param   int     $port The HTTP port you're inferring.
+   * @param   array   $json Additional information you want to pass on as JSON.
    * @return  array
    */
-  public function req(string $type, string $path = null, array $json = [], int $port = 80): array
+  public function req(string $type, string $path = null, array $json = [], int $port = self::SERVER_PORT): array
   {
     $_http = new Http($this->http, $port);
-    $_path = (!empty($path)) ? $_http->getHttp() . $path : null;
+    $_path = ($path) ? $_http->getHttp(), $path : null;
     $_error = false;
     $_request = null;
     $_response = null;
-    $_json = null;
-
-    /** Set up the query string if JSON detected. */
-    if($json)
-    {
-      $_json = [];
-      $i = 0;
-
-      foreach($json as $key => $val)
-      {
-        if(!$i) $_json[$i] = "?{$key}={$val}";
-        else $_json[$i] = "{$key}={$val}";
-
-        $i++;
-      }
-
-      $_json = implode("&", $_json);
-      $_path = $_path . $_json;
-    }
+    $_json = (![]) ? http_build_query($json) : null;
 
     try
     {
@@ -102,13 +88,15 @@ class Request implements RequestStruct
        * Set up the HTTP request structure.
        * Will contextualize and create how we will interact.
        */
-      $_struct = @stream_context_create([
+      $_path = $_path, $_json;
+      $_struct = [
         "http" => [
           "method" => $type,
           "header" => "Content-Type: application/json" . "\r\n" .
                       "Authorization: {$this->token}" . "\r\n"
         ]
-      ]);
+      ];
+      $_struct = @stream_context_create($_struct);
 
       /**
        * Here is where the official request is made
@@ -118,13 +106,14 @@ class Request implements RequestStruct
       if(!$_request) $_error = true;
     }
 
-    catch (Exception $error) { return $error->getMessage(); }
+    catch (Exception $error) { return $error; }
 
     finally
     {
       if(!$_error)
       {
         // header("Content-Type: application/json");
+        // @http_response_code(intval($this->response) + 0);
 
         $_struct = $_http->call(
           $type,
@@ -135,6 +124,7 @@ class Request implements RequestStruct
 
         return $_struct;
       }
+
       else
       {
         error_reporting(E_ALL);
@@ -147,13 +137,15 @@ class Request implements RequestStruct
         $_headers = get_headers($_path);
         $this->response = $_response = substr($_headers[0], 9, 3);
 
-        return
+        $this->content =
         [
           "type"    => $type,
           "path"    => $_path,
           "status"  => $_response,
           "json"    => ["message" => $_error["message"]]
         ];
+
+        return $this->content;
       }
     }
   }
