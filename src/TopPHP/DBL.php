@@ -27,6 +27,12 @@ use DBL\Structs\BaseStruct;
 final class DBL implements BaseStruct
 {
   /**
+   * @var     string
+   * @access  private
+   */
+  protected $http;
+
+  /**
    * @var     int
    * @access  private
    */
@@ -61,16 +67,16 @@ final class DBL implements BaseStruct
    * Creates a DBL instance.
    *
    * @param   array $parameters The parameters necessary for an established connection.
-   * @param   bool  $webhook If your connection is a webhook, defaults to false.
    * @return  void
    */
-  public function __construct(array $parameters, bool $webhook = false)
+  public function __construct(array $parameters)
   {
     /**
-     * There are 3 acceptable parameters:
+     * There are 4 acceptable parameters:
      * - [string] token: The API token key.
      * - [array] [opt] auto_stats: If you want to automatically post stats.
      * - [bool] [opt] safety: For webserver protection and ensuring extra locks.
+     * - [array] [opt] webhook: If you would like to send your information as a webhook.
      *
      * This will look for if any are present and valid.
      * Also, make sure a token is present. How the fuck are you gonna use it otherwise?
@@ -79,16 +85,30 @@ final class DBL implements BaseStruct
 
     error_reporting(0);
 
+    /**
+     * Begin scanning through all of the possible accepted parameters.
+     * PHP Warnings are thrown in the event that they're found to be as invalid keys
+     * that are not assigned.
+     */
+    $this->features =
+    [
+      "auto_stats"  => [false],
+      "safety"      => false,
+      "webhook"     => []
+    ];
+
     if($parameters["auto_stats"]) $this->features["auto_stats"][0] = true;
     if($parameters["safety"]) $this->features["safety"] = true;
+    if($parameters["webhook"]) $this->features["webhook"] = true;
     if($parameters["token"]) $this->token = $parameters["token"];
     else throw new MissingTokenException();
 
-    $this->port = 80;
-    $this->api = new Request($this->token, $this->port);
+    $this->http = (!$parameters["webhook"]["url"]) ? Request::SERVER_ADDR : $parameters["webhook"]["url"];
+    $this->port = (!$parameters["webhook"]["port"]) ? Request::SERVER_PORT : $parameters["webhook"]["port"];
+    $this->api = new Request($this->token, $this->http);
 
     /** Proxy an HTTP request to see if it works. */
-    $_response = $this->api->req("GET", "/users/242351388137488384")["status"];
+    $_response = $this->api->req("GET", "/users/140862798832861184")["status"];
     if($_response === "200") $this->connected = true;
 
     /** Finally do our feature checks from the parameters list. */
@@ -130,7 +150,11 @@ final class DBL implements BaseStruct
 
     catch(Exception $error) { echo $error; }
 
-    finally { echo "<meta http-equiv='refresh' content='1800;URL=\"{$_url}\"' />"; }
+    finally
+    {
+      header("Content-Type: application/json");
+      echo "<meta http-equiv='refresh' content='1800;URL=\"{$_url}\"' />";
+    }
   }
 
   /**

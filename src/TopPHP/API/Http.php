@@ -88,7 +88,7 @@ class Http implements HttpStruct
     */
 
     /** Determine what our response status code is. */
-    $_headers = ($_type != null) ? get_headers($path) : "400";
+    $_headers = ($_type) ? get_headers($path) : "400";
     $_response = substr($_headers[0], 9, 3);
 
     if($_response === "401") $_response = "200"; // This is because the token is not being enforced.
@@ -103,12 +103,12 @@ class Http implements HttpStruct
        * will be updated in the future.
        */
 
-       throw new Exception("You have encountered a rate limit. Please refer to the JSON contents for the remaining time.");
+       die("You have encountered a rate limit. Please refer to the JSON contents for the remaining time.");
     }
 
     /** Now provide the information for the structure. */
     $_path = ($_response === "200") ? $path : null;
-    $_payload = (!empty($payload)) ? $payload : null;
+    $_payload = (!$payload) ? $payload : null;
 
     /**
      * All returned information will be formatted this way.
