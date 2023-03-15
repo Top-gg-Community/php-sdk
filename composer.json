@@ -3,15 +3,19 @@
   "description": "The official Top.gg PHP API wrapper.",
   "license": "MIT",
   "require": {
-    "php": "^7.3|^8.0"
+    "php": "^8.0"
   },
   "authors": [
     {
       "name": "James Walston",
       "email": "james@digicale.com"
+    },
+    {
+      "name": "Federico Cosma",
+      "email": "foxworn3365@gmail.com"
     }
   ],
   "autoload": {
-    "psr-4": {"DBL\\": "src/TopPHP/"}
+    "psr-4": {"TopPHP\\": "src/TopPHP/"}
   }
 }

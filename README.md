@@ -2,7 +2,7 @@
 A Top.gg API wrapper written in PHP 8.
 
 ## Documentation
-See [here](https://docs.top.gg/libraries/php/) for the official information.
+See [here](docs.md) for the official information.
 
 ## Installation
 TopPHP uses composer to download. In order to install the library, use the following line:
@@ -12,12 +12,10 @@ TopPHP uses composer to download. In order to install the library, use the follo
 ## Features
 
 * Working GET and POST requests.
-* Enumerable constants for HTTP search lookups.
-* Flexible namespaces and interfaces for easily editing.
-* Up-to-standard package following the latest PSR.
-* Automatic bot statistics POST requests. (Shards, guilds)
+* Simple cache system included
+* Working HTTP WebServer for Webhooks with [ReactPHP/http](https://github.com/reactphp/http)
+* Internal Exceptions Manager
+* Object-Oriented library
 
 ## Coming Soon
-
-* Webhooks
 * Forced library global rate-limiting.
