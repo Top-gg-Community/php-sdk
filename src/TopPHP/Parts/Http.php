@@ -13,7 +13,7 @@ namespace TopPHP\Parts;
 use TopPHP\Parts\Cache;
 
 class Http {
-    protected static function request(string $protocol, string $url, string $token, mixed $body = NULL) {
+    protected static function request(string $protocol, string $url, string $token, mixed $body = NULL) : mixed {
         $body = $body ?? [];
         $options = stream_context_create(array( 
           'http' => array(
@@ -25,11 +25,11 @@ class Http {
               // 'ignore_errors' => true
           )
         )); 
-        $response = json_decode(file_get_contents($url, false, $options));
+        $response = @json_decode(file_get_contents($url, false, $options));
         return $response;
     }
   
-    public static function get(string $url, string $token, mixed $body = NULL) {
+    public static function get(string $url, string $token, mixed $body = NULL) : mixed {
         if (Cache::is($url)) {
           return Cache::get($url);
         }
@@ -38,12 +38,21 @@ class Http {
         return $response;
     }
   
-    public static function fetch(string $url, string $token, mixed $body = NULL) {
+    public static function fetch(string $url, string $token, mixed $body = NULL) : mixed {
         $response = self::request('GET', $url, $token, $body);
         return $response;
     }
 
-    public static function post(string $url, string $token, mixed $body = NULL) {
+    public static function post(string $url, string $token, mixed $body = NULL) : mixed {
         return self::request('POST', $url, $token, $body);
     } 
+
+    public static function pureGet(string $url) : mixed {
+        if (Cache::is($url)) {
+            return Cache::get($url);
+          }
+          $response = @json_decode(file_get_contents($url));
+          Cache::set($url, $response);
+          return $response;
+      }
 }

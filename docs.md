@@ -3,7 +3,7 @@ Through this library you can quickly interact with the top.gg API.
 
 ## Bot object
 TopPHP handles bots as objects, so that all functions related to a bot are grouped in a single place
-#### `TopGG\Components\Bot`
+#### `TopPHP\Components\Bot`
 ---
 ### Getting the bot object
 You can get the bot object by `get` and the `bots` repository:
@@ -66,8 +66,10 @@ The complete list is in the [official documentation](https://docs.top.gg/api/bot
 ## User object
 As with bots, all of a user's information is saved and provided in the form of an object as it is easier to access the various functions.
 
+`TopPHP\Components\User`
+
 ### Getting the user object
-You can get the bot object by `get` and the `users` repository:
+You can get the user object by `get` and the `users` repository:
 ```php
 $user = $topphp->users->get(string $userid);
 ```
@@ -81,8 +83,67 @@ This function for completeness can also be called from the user object:
 ```php
 $user->hasVoted(string $botid)   : bool
 ```
+---
+### User information
+In the `User` object are saved all the user's informations.<br>
+The complete list is in the [official documentation](https://docs.top.gg/api/users/#structure)
 
 <br>
+
+## Guild Object
+It will now also be possible to retrieve Server information thanks to this library!
+> **Warning**
+> These APIs are not officially supported for the library's use, so we recommend using them with caution.
+
+`TopPHP\Components\Guild`
+
+### Getting the guild object
+You can get the user object by `get` and the `users` repository.
+> **Warning**
+> To retrieve information on a server, it is mandatory to enter the full name of the server in addition to the ID!
+```php
+$guild = $topgg->guilds->get(string $name, string $id)  : Guild;
+```
+Example:
+```php
+$guild = $topgg->guilds->get('Foundation', '775487804540190780')  : Guild;
+```
+Sometimes the server may not be found due to various problems, in which case a `notFoundException` will be invoked.
+
+---
+You can also get the top guilds on top.gg:
+```php
+$top = $topphp->guilds->top()  : Collection
+```
+You get a list of servers in a Collection (associative array) that has the server ID as key.
+Example:
+```php
+$foundation = $topphp->guilds->top()->get('775487804540190780');
+```
+---
+### Guild information
+In the `Guild` object are saved all the Guild's informations.<br>
+Here a complete list: (`?` = not required):
+* `id`
+* `type`
+* `platform`
+* `name`
+* `icon`
+* `votes`
+* `nsfwLevel`
+* `description`
+* `?tags`
+* `?socialCount`
+* `isLocked`
+* `?lockAuthor`
+* `?lockReason`
+* `createdAt`
+* `?reviewStats`
+* `iconUrl`
+* `?reviewScore`
+
+<br>
+
 
 ## Webhook management
 **TopPHP** has an internal library for complete webhook management.
@@ -342,7 +403,7 @@ $prefix = $topphp->bots->get('123123123123123')->prefix;
 ```
 
 ---
-### Check if a user has voted the bot
+### Check if an user has voted the bot
 #### From `TopPHP\Components\Bot`
 ```php
 session_start();
