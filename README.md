@@ -16,7 +16,6 @@ TopPHP uses composer to download. In order to install the library, use the follo
 * Working HTTP WebServer for Webhooks with [ReactPHP/http](https://github.com/reactphp/http).
 * Internal Exceptions Manager.
 * Object-Oriented library.
-* Guild integration (With Guild object)   *NOT STABLE*
 
 ## Coming Soon
 * Forced library global rate-limiting.

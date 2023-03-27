@@ -90,60 +90,6 @@ The complete list is in the [official documentation](https://docs.top.gg/api/use
 
 <br>
 
-## Guild Object
-It will now also be possible to retrieve Server information thanks to this library!
-> **Warning**
-> These APIs are not officially supported for the library's use, so we recommend using them with caution.
-
-`TopPHP\Components\Guild`
-
-### Getting the guild object
-You can get the user object by `get` and the `users` repository.
-> **Warning**
-> To retrieve information on a server, it is mandatory to enter the full name of the server in addition to the ID!
-```php
-$guild = $topgg->guilds->get(string $name, string $id)  : Guild;
-```
-Example:
-```php
-$guild = $topgg->guilds->get('Foundation', '775487804540190780')  : Guild;
-```
-Sometimes the server may not be found due to various problems, in which case a `notFoundException` will be invoked.
-
----
-You can also get the top guilds on top.gg:
-```php
-$top = $topphp->guilds->top()  : Collection
-```
-You get a list of servers in a Collection (associative array) that has the server ID as key.
-Example:
-```php
-$foundation = $topphp->guilds->top()->get('775487804540190780');
-```
----
-### Guild information
-In the `Guild` object are saved all the Guild's informations.<br>
-Here a complete list: (`?` = not required):
-* `id`
-* `type`
-* `platform`
-* `name`
-* `icon`
-* `votes`
-* `nsfwLevel`
-* `description`
-* `?tags`
-* `?socialCount`
-* `isLocked`
-* `?lockAuthor`
-* `?lockReason`
-* `createdAt`
-* `?reviewStats`
-* `iconUrl`
-* `?reviewScore`
-
-<br>
-
 
 ## Webhook management
 **TopPHP** has an internal library for complete webhook management.

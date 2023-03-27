@@ -15,7 +15,6 @@ use TopPHP\Components\Bots;
 use TopPHP\Parts\Cache;
 use TopPHP\Parts\Http;
 use TopPHP\Components\Users;
-use TopPHP\Components\Guilds;
 use TopPHP\Parts\Webhooks\Webhook;
 
 class TopPHP {
@@ -37,7 +36,6 @@ class TopPHP {
   public Cache $cache;
   public Webhook $webhook;
   public Users $users;
-  public Guilds $guilds;
 
   // Creating the API Interface panel
   function __construct(array $configuration) {
@@ -54,7 +52,6 @@ class TopPHP {
   protected function refreshChildAccessRate() : void {
     $this->bots = new Bots($this);
     $this->users = new Users($this);
-    $this->guilds = new Guilds($this);
     $this->webhook = new Webhook($this);
   }
 
